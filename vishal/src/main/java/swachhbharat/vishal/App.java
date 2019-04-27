@@ -2,12 +2,9 @@ package swachhbharat.vishal;
 
 import java.io.*;
 import java.util.*;
-//import javax.swing.text.html.HTMLDocument.Iterator;
 
-class Item{  
-	
-    
-  }  
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Test;
 
 public class App 
 {
@@ -16,55 +13,68 @@ public class App
     String name;  
     int qty;
     int cap;
+    double wt;
     
-    //Scanner scan = new java.util.Scanner(System.in);
-    App(int itemno,String name,int qty,int cap){  
     
-     this.itemno=itemno;  
-     this.name=name;
-     x = new java.util.Scanner(System.in);
-     System.out.println("Enter number of "+name);
-     this.qty=x.nextInt();
-     System.out.println("Enter the capacity of "+name+" in ml");
-     this.cap=x.nextInt();
-     
- 
-     //x.close();
-     
+    App(int itemno,String name,int qty,int cap,double wt)
+    {  
+      this.itemno=itemno;  
+      this.name=name;
+      x = new java.util.Scanner(System.in);
+      System.out.println("Enter number of "+name);
+      this.qty=x.nextInt();
+      System.out.println("Enter the capacity of "+name+" in ml");
+      this.cap=x.nextInt();
+      this.wt=wt;
     }  
 
     public static void main( String[] args )
     {
-    	//Scanner sc = new Scanner(System.in);
-    	//System.out.println("Login \nUsername, Password & Phonenumber");
     	String username=args[0];
     	String password=args[1];
     	String phone=args[2];
     	String filepath="/home/vishal/git/freshers-assignment-2019/vishal/src/main/java/swachhbharat/vishal/members.txt";
-    	//sc.close();
+    	double tgrams=0;
     	
     	if(verifyLogin(username,password,phone,filepath))
     	{
     		System.out.println("Welcome "+username+"\nEnter item details you wish to recycle\n");
-    		//System.out.println("1.Generic\n2.Specific\n");
-    		App i1=new App(1,"Plastic bottles",0,0);  
-    		App i2=new App(2,"Plastic cups",0,0);  
-    		App i3=new App(3,"Glasses",0,0);  
+    		
+ /*last parameter in constructor is weight of the material per ml capacity(1ml=?gm)
+    Assuming:
+    		1ml capacity plastic =0.02gms (500ml-10gms) 
+    		1ml capacity glass =0.7gms (200ml-140gms)
+    		1ml capacity metal cans =0.04gms (350ml=15gms)
+ */
+    		App i1=new App(1,"Plastic bottles",0,0,0.02);  
+    		App i2=new App(2,"Glasses",0,0,0.7);  
+    		App i3=new App(3,"Metal Cans",0,0,0.04);  
     		ArrayList<App> al=new ArrayList<App>();  
     		al.add(i1);  
     		al.add(i2);  
     		al.add(i3);  
-    		  
     		java.util.Iterator<App> iterator=al.iterator();  
     		  
     		while(iterator.hasNext())
     		{  
     		    App it=(App)iterator.next();  
-    		    System.out.println(it.itemno+" "+it.name+" "+it.qty+" "+it.cap);  
+    		    System.out.println(it.itemno+" "+it.name+" "+it.qty+" "+it.cap);
+    		    tgrams+=it.qty*it.cap*it.wt;
     		}
+    	System.out.println("Total amout of recycled items: "+tgrams+" gms");
+ //Assuming that 10gms recycled product gives 7 credit points 
+    	System.out.println("Total credits earned are: "+String.format("%.0f", tgrams*0.7));
+    	System.out.println("Coupon Code to redeem your credits is: "+givenUsingApache_whenGeneratingRandomAlphanumericString_thenCorrect());
     	}
     	else
     		System.out.println("User not found");
+    }
+    
+    @Test
+    public static String givenUsingApache_whenGeneratingRandomAlphanumericString_thenCorrect() {
+        String generatedString = RandomStringUtils.randomAlphanumeric(7);
+     
+        return(generatedString);
     }
         
     
