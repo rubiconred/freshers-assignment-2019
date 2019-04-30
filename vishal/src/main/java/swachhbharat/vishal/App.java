@@ -139,7 +139,7 @@ public class App
     		  tgrams+=it.qty*it.cap*it.wt;
     		   
     	}
-    		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    	    TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             DOMSource source = new DOMSource(doc);
@@ -148,7 +148,6 @@ public class App
 
             transformer.transform(source, console);
             transformer.transform(source, file);
-            System.out.println("DONE");
             System.out.println("Total amout of recycled items: "+tgrams+" gms");
  //Assuming that 10gms recycled product gives 7 credit points 
             System.out.println("Total credits earned are: "+String.format("%.0f", tgrams*0.7));
@@ -173,13 +172,13 @@ public class App
     private static Node getItem(Document doc, String name, String qty, String cap) 
     {
     	 Element item = doc.createElement("Item");
-         item.appendChild(getEmployeeElements(doc, item, "Item", name));
-         item.appendChild(getEmployeeElements(doc, item, "Quantity", qty));
-         item.appendChild(getEmployeeElements(doc, item, "Capacity", cap));
+         item.appendChild(getItemElements(doc, item, "Item", name));
+         item.appendChild(getItemElements(doc, item, "Quantity", qty));
+         item.appendChild(getItemElements(doc, item, "Capacity", cap));
          return item;
     }
 
-    private static Node getEmployeeElements(Document doc, Element element, String name, String value) {
+    private static Node getItemElements(Document doc, Element element, String name, String value) {
         Element node = doc.createElement(name);
         node.appendChild(doc.createTextNode(value));
         return node;
