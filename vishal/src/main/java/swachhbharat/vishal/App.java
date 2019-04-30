@@ -15,7 +15,7 @@ public class App
     int cap;
     double wt;
     
-    
+    //Constructor for General mode
     App(int itemno,String name,int qty,int cap,double wt)
     {  
       this.itemno=itemno;  
@@ -25,6 +25,17 @@ public class App
       this.qty=x.nextInt();
       System.out.println("Enter the capacity of "+name+" in ml");
       this.cap=x.nextInt();
+      this.wt=wt;
+    } 
+    
+    //Constructor for Specific mode
+    App(String name,int qty,int cap,double wt)
+    {    
+      this.name=name;
+      x = new java.util.Scanner(System.in);
+      System.out.println("Enter number of "+name);
+      this.qty=x.nextInt();
+      this.cap=cap;
       this.wt=wt;
     }  
 
@@ -46,25 +57,70 @@ public class App
     		1ml capacity glass =0.7gms (200ml-140gms)
     		1ml capacity metal cans =0.04gms (350ml=15gms)
  */
-    		App i1=new App(1,"Plastic bottles",0,0,0.02);  
-    		App i2=new App(2,"Glasses",0,0,0.7);  
-    		App i3=new App(3,"Metal Cans",0,0,0.04);  
-    		ArrayList<App> al=new ArrayList<App>();  
-    		al.add(i1);  
-    		al.add(i2);  
-    		al.add(i3);  
+    		x = new java.util.Scanner(System.in);
+    		System.out.println("Select a mode\n1.General\n2.Specialized");
+    		int op = x.nextInt(); 
+    		ArrayList<App> al=new ArrayList<App>();
+   
+            switch (op) { 
+            case 1: 
+            	//General mode
+            	int m;
+            	boolean mi;
+            	do {
+            	App gi1=new App(1,"Plastic bottles",0,0,0.02);  
+        		App gi2=new App(2,"Glasses",0,0,0.7);  
+        		App gi3=new App(3,"Metal Cans",0,0,0.04);  
+        		al.add(gi1);  
+        		al.add(gi2);  
+        		al.add(gi3); 
+        		System.out.println("Do you want to enter more items of different capacity 0(no)/1(yes)");
+        		m = x.nextInt();
+        		if(m==0) mi=false; else mi=true;
+            	}
+            	while(mi);
+                break; 
+            case 2: 
+            	//Specific waste items
+            	App i1=new App("Sprite PET 750ml",0,750,0.02);  
+        		App i2=new App("Sprite Glass 200ml",0,200,0.7);  
+        		App i3=new App("Sprite Can 200ml",0,200,0.04);
+        		App i4=new App("Sprite PET 2L",0,2000,0.02);  
+        		App i5=new App("Coke PET 750ml",0,750,0.02);  
+        		App i6=new App("Coke Glass 200ml",0,200,0.7);  
+        		App i7=new App("Coke Can 200ml",0,200,0.04); 
+        		App i8=new App("Coke PET 2L",0,2000,0.02);    
+        		App i9=new App("Kingfisher Glass 650",0,650,0.7);  
+        		App i10=new App("Kingfisher Can 500",0,500,0.04);
+        		al.add(i1);  
+        		al.add(i2);  
+        		al.add(i3);
+        		al.add(i4);  
+        		al.add(i5);  
+        		al.add(i6);
+        		al.add(i7);  
+        		al.add(i8);  
+        		al.add(i9);
+        		al.add(i10);  
+                break; 
+            default: 
+            	System.out.println("Invalid option"); 
+                System.exit(0); 
+            } 
+            
     		java.util.Iterator<App> iterator=al.iterator();  
     		  
     		while(iterator.hasNext())
     		{  
     		    App it=(App)iterator.next();  
-    		    System.out.println(it.itemno+" "+it.name+" "+it.qty+" "+it.cap);
+    		    System.out.println(it.name+" "+it.qty+" "+it.cap);
     		    tgrams+=it.qty*it.cap*it.wt;
     		}
     	System.out.println("Total amout of recycled items: "+tgrams+" gms");
  //Assuming that 10gms recycled product gives 7 credit points 
     	System.out.println("Total credits earned are: "+String.format("%.0f", tgrams*0.7));
     	System.out.println("Coupon Code to redeem your credits is: "+givenUsingApache_whenGeneratingRandomAlphanumericString_thenCorrect());
+    	
     	}
     	else
     		System.out.println("User not found");
@@ -111,4 +167,3 @@ public class App
     return found;
     }
 }
-
