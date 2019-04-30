@@ -2,9 +2,21 @@ package swachhbharat.vishal;
 
 import java.io.*;
 import java.util.*;
-
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
 
 public class App 
 {
@@ -38,8 +50,9 @@ public class App
       this.cap=cap;
       this.wt=wt;
     }  
+   
 
-    public static void main( String[] args )
+    public static void main( String[] args ) throws TransformerException, ParserConfigurationException
     {
     	String username=args[0];
     	String password=args[1];
@@ -81,7 +94,7 @@ public class App
             	while(mi);
                 break; 
             case 2: 
-            	//Specific waste items
+            	//Specific mode
             	App i1=new App("Sprite PET 750ml",0,750,0.02);  
         		App i2=new App("Sprite Glass 200ml",0,200,0.7);  
         		App i3=new App("Sprite Can 200ml",0,200,0.04);
@@ -108,32 +121,72 @@ public class App
                 System.exit(0); 
             } 
             
-    		java.util.Iterator<App> iterator=al.iterator();  
-    		  
-    		while(iterator.hasNext())
-    		{  
-    		    App it=(App)iterator.next();  
-    		    System.out.println(it.name+" "+it.qty+" "+it.cap);
-    		    tgrams+=it.qty*it.cap*it.wt;
-    		}
-    	System.out.println("Total amout of recycled items: "+tgrams+" gms");
+            
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder;
+            dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.newDocument();
+            Element rootElement = doc.createElementNS("SwachhBharat", "Items");
+            doc.appendChild(rootElement);
+       
+            
+   java.util.Iterator<App> iterator=al.iterator(); 	  
+    	while(iterator.hasNext())
+    	{  
+    		  App it=(App)iterator.next(); 
+    		  rootElement.appendChild(getItem(doc,it.name,Integer.toString(it.qty),Integer.toString(it.cap)));
+    		  System.out.println(it.name+" "+it.qty+" "+it.cap);
+    		  tgrams+=it.qty*it.cap*it.wt;
+    		   
+    	}
+    		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            DOMSource source = new DOMSource(doc);
+            StreamResult console = new StreamResult(System.out);
+            StreamResult file = new StreamResult(new File("/home/vishal/emps.xml"));
+
+            transformer.transform(source, console);
+            transformer.transform(source, file);
+            System.out.println("DONE");
+            System.out.println("Total amout of recycled items: "+tgrams+" gms");
  //Assuming that 10gms recycled product gives 7 credit points 
-    	System.out.println("Total credits earned are: "+String.format("%.0f", tgrams*0.7));
-    	System.out.println("Coupon Code to redeem your credits is: "+givenUsingApache_whenGeneratingRandomAlphanumericString_thenCorrect());
+            System.out.println("Total credits earned are: "+String.format("%.0f", tgrams*0.7));
+            System.out.println("Coupon Code to redeem your credits is: "+givenUsingApache_whenGeneratingRandomAlphanumericString_thenCorrect());
     	
     	}
     	else
     		System.out.println("User not found");
     }
     
-    @Test
+
+
+	@Test
     public static String givenUsingApache_whenGeneratingRandomAlphanumericString_thenCorrect() {
         String generatedString = RandomStringUtils.randomAlphanumeric(7);
      
         return(generatedString);
     }
-        
     
+    
+  
+    private static Node getItem(Document doc, String name, String qty, String cap) 
+    {
+    	 Element item = doc.createElement("Item");
+         item.appendChild(getEmployeeElements(doc, item, "Item", name));
+         item.appendChild(getEmployeeElements(doc, item, "Quantity", qty));
+         item.appendChild(getEmployeeElements(doc, item, "Capacity", cap));
+         return item;
+    }
+
+    private static Node getEmployeeElements(Document doc, Element element, String name, String value) {
+        Element node = doc.createElement(name);
+        node.appendChild(doc.createTextNode(value));
+        return node;
+    }
+    
+
+ 
     public static boolean verifyLogin(String username,String password,String phone,String filepath)
     {
     	boolean found=false;
