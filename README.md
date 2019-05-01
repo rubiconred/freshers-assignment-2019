@@ -1,4 +1,4 @@
-#Swatch Bharath
+# Swatch Bharath
 
 Login and Registartion :
 
@@ -9,7 +9,7 @@ Login and Registartion :
 	During login if the provided information does not match with the registered data then it terminates the loop by throwing some exceptions.
 
 
-#Submission of wastage for Recycling :
+# Submission of wastage for Recycling :
 
 	User can give 3 types of wastages i,e plastic, metal and glass.
 
@@ -21,7 +21,7 @@ Login and Registartion :
 
 Then again the entire process will be repeated based on the users requirements.
 
-#Technical Tools :
+# Technical Tools :
 
 	Java is the Programming Language used for Writing the Code of the Application.
 
