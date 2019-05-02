@@ -1,6 +1,7 @@
 
-#SWACHH BHARAT 
- The designed Swachh Bharat app consists of following features :
+#SWACHH BHARAT
+
+  The designed Swachh Bharat app consists of following features :
 - user can give his details initially like user name, email id, contact number for registration purpose
 - upon the registration, user can give the details of the wastages like type,quantity,brand.
 - After the process of entering details is done, credit points equal to the half of the weight deposited will be given to each user.
